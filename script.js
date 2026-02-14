@@ -97,23 +97,23 @@ function sendAcceptanceEmail() {
   }
 
   const params = {
-    email: "junry.jumawan4@gmail.com", // must match {{email}} in template
+    email: "junry.jumawan4@gmail.com",
     time: new Date().toLocaleString(),
     page_url: window.location.href,
     message:
-      "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨"
+      "Inah Cañete clicked YES 💖 — I’ll pick you up at 7:30 PM."
   };
 
   emailjs
     .send("service_zwkrk1s", "template_rc1snto", params)
     .then(() => {
-      console.log("✅ Email sent successfully");
+      console.log("✅ Email sent");
     })
     .catch((err) => {
-      console.error("❌ EmailJS error:", err);
-      // ❌ Do NOT show anything on screen
+      console.log("EmailJS error (hidden from UI):", err);
     });
 }
+
 
 // Hearts
 function createHeart() {
