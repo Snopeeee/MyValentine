@@ -1,8 +1,10 @@
+// Buttons / UI
 const acceptBtn = document.getElementById("acceptBtn");
 const noBtn = document.getElementById("noBtn");
 const response = document.getElementById("response");
 const card = document.querySelector(".card");
 
+// Sounds
 const hoverSound = document.getElementById("hoverSound");
 const yesSound = document.getElementById("yesSound");
 
@@ -10,6 +12,13 @@ const yesSound = document.getElementById("yesSound");
 const modal = document.getElementById("valentineModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const modalBackdrop = document.querySelector(".modal-backdrop");
+
+// ✅ EmailJS init
+(function () {
+  if (window.emailjs) {
+    emailjs.init("wYJaqXN05jT1tFfhi");
+  }
+})();
 
 // Move NO button on hover
 noBtn.addEventListener("mouseenter", () => {
@@ -31,7 +40,7 @@ acceptBtn.addEventListener("click", () => {
   yesSound.play().catch(() => {});
   response.innerHTML = "Yay! I can't wait to see you ❤️✨";
 
-  // confetti
+  // Confetti
   if (typeof confetti === "function") {
     confetti({
       particleCount: 220,
@@ -40,12 +49,12 @@ acceptBtn.addEventListener("click", () => {
     });
   }
 
-  // hearts burst
+  // Hearts burst
   for (let i = 0; i < 12; i++) {
     setTimeout(createHeart, i * 120);
   }
 
-  // disable buttons
+  // Disable buttons
   acceptBtn.disabled = true;
   noBtn.disabled = true;
 
@@ -54,7 +63,10 @@ acceptBtn.addEventListener("click", () => {
   noBtn.style.opacity = "0.75";
   noBtn.style.cursor = "not-allowed";
 
-  // show modal
+  // ✅ Send email notification to you
+  sendAcceptanceEmail();
+
+  // Show popup
   setTimeout(openModal, 400);
 });
 
@@ -76,10 +88,33 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeModal();
 });
 
-// Hearts using your image ✅
+// ✅ Email sending function
+function sendAcceptanceEmail() {
+  if (!window.emailjs) return;
+
+  const params = {
+    message:
+      "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨",
+    time: new Date().toLocaleString(),
+    page_url: window.location.href
+  };
+
+  emailjs
+    .send("service_q9ez7ed", "template_rc1snto", params)
+    .then(() => console.log("✅ Email sent via EmailJS"))
+    .catch((err) => console.error("❌ EmailJS failed:", err));
+}
+
+// Hearts (uses your image file)
 function createHeart() {
   const heart = document.createElement("img");
-  heart.src = "hearts.png"; // ✅ correct path
+
+  // If your repo has hearts.png in ROOT:
+  heart.src = "hearts.png";
+
+  // If you move it to /images/heart.png, use:
+  // heart.src = "images/heart.png";
+
   heart.className = "floating-heart";
 
   const size = Math.random() * 20 + 20;
