@@ -42,12 +42,21 @@ acceptBtn.addEventListener("click", () => {
   yesSound.play().catch(() => {});
   response.innerHTML = "Yay! I can't wait to see you ❤️✨";
 
+  // Confetti
   if (typeof confetti === "function") {
-    confetti({ particleCount: 220, spread: 120, origin: { y: 0.65 } });
+    confetti({
+      particleCount: 220,
+      spread: 120,
+      origin: { y: 0.65 }
+    });
   }
 
-  for (let i = 0; i < 12; i++) setTimeout(createHeart, i * 120);
+  // Heart burst
+  for (let i = 0; i < 12; i++) {
+    setTimeout(createHeart, i * 120);
+  }
 
+  // Disable buttons
   acceptBtn.disabled = true;
   noBtn.disabled = true;
   acceptBtn.style.opacity = "0.75";
@@ -55,7 +64,10 @@ acceptBtn.addEventListener("click", () => {
   noBtn.style.opacity = "0.75";
   noBtn.style.cursor = "not-allowed";
 
+  // Send email silently (no UI error shown)
   sendAcceptanceEmail();
+
+  // Show popup
   setTimeout(openModal, 400);
 });
 
@@ -64,47 +76,42 @@ function openModal() {
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
 }
+
 function closeModal() {
   modal.classList.remove("show");
   modal.setAttribute("aria-hidden", "true");
 }
+
 closeModalBtn.addEventListener("click", closeModal);
 modalBackdrop.addEventListener("click", closeModal);
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeModal();
 });
 
-// ✅ Email sending function (FIXED: uses `email` to match {{email}})
+// ✅ Email sending function (NO ERROR DISPLAY)
 function sendAcceptanceEmail() {
   if (!window.emailjs) {
-    response.innerHTML += "<br><small style='color:#b00020'>❌ EmailJS not loaded.</small>";
+    console.warn("EmailJS not loaded.");
     return;
   }
 
-function sendAcceptanceEmail() {
   const params = {
-    email: "junry.jumawan4@gmail.com",  // MUST be "email"
+    email: "junry.jumawan4@gmail.com", // must match {{email}} in template
     time: new Date().toLocaleString(),
     page_url: window.location.href,
-    message: "Inah Cañete clicked YES 💖 — I’ll pick you up at 7:30 PM."
+    message:
+      "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨"
   };
-
-  emailjs.send("service_zwkrk1s", "template_rc1snto", params)
-    .then(() => console.log("✅ sent"))
-    .catch((err) => console.log("❌", err));
-}
-
-
-  response.innerHTML += "<br><small>📩 Sending email...</small>";
 
   emailjs
     .send("service_zwkrk1s", "template_rc1snto", params)
     .then(() => {
-      response.innerHTML += "<br><small style='color:green'>✅ Email sent to you!</small>";
+      console.log("✅ Email sent successfully");
     })
     .catch((err) => {
-      console.error("❌ EmailJS failed:", err);
-      response.innerHTML += `<br><small style="color:#b00020">❌ Email failed: ${err?.text || JSON.stringify(err)}</small>`;
+      console.error("❌ EmailJS error:", err);
+      // ❌ Do NOT show anything on screen
     });
 }
 
@@ -124,9 +131,11 @@ function createHeart() {
   heart.style.opacity = (Math.random() * 0.5 + 0.5).toFixed(2);
 
   document.body.appendChild(heart);
+
   setTimeout(() => heart.remove(), duration * 1000);
 }
 
+// Soft floating hearts before accepting
 setInterval(() => {
   if (!acceptBtn.disabled) createHeart();
 }, 900);
