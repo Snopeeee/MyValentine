@@ -93,13 +93,15 @@ document.addEventListener("keydown", (e) => {
 // ✅ Email sending function (with debug + UI status)
 function sendAcceptanceEmail() {
   if (!window.emailjs) {
-    response.innerHTML += "<br><small style='color:#b00020'>❌ EmailJS not loaded.</small>";
+    response.innerHTML +=
+      "<br><small style='color:#b00020'>❌ EmailJS not loaded.</small>";
     return;
   }
 
-  // Optional: include to_email if your template uses it
   const params = {
-    // to_email: "junry.jumawan4@gmail.com",
+    // ✅ recipient email (use this only if your template uses {{to_email}})
+    to_email: "junry.jumawan4@gmail.com",
+
     message:
       "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨",
     time: new Date().toLocaleString(),
@@ -112,25 +114,21 @@ function sendAcceptanceEmail() {
     .send("service_q9ez7ed", "template_rc1snto", params)
     .then((res) => {
       console.log("✅ Email sent via EmailJS:", res);
-      response.innerHTML += "<br><small style='color:green'>✅ Email sent to you!</small>";
+      response.innerHTML +=
+        "<br><small style='color:green'>✅ Email sent to you!</small>";
     })
     .catch((err) => {
       console.error("❌ EmailJS failed:", err);
-      response.innerHTML +=
-        `<br><small style="color:#b00020">❌ Email failed: ${err?.text || JSON.stringify(err)}</small>`;
+      response.innerHTML += `<br><small style="color:#b00020">❌ Email failed: ${
+        err?.text || JSON.stringify(err)
+      }</small>`;
     });
 }
 
 // Hearts (uses your image file)
 function createHeart() {
   const heart = document.createElement("img");
-
-  // If your repo has hearts.png in ROOT:
-  heart.src = "hearts.png";
-
-  // If you move it to /images/heart.png, use:
-  // heart.src = "images/heart.png";
-
+  heart.src = "hearts.png"; // your current file in repo root
   heart.className = "floating-heart";
 
   const size = Math.random() * 20 + 20;
@@ -143,7 +141,6 @@ function createHeart() {
   heart.style.opacity = (Math.random() * 0.5 + 0.5).toFixed(2);
 
   document.body.appendChild(heart);
-
   setTimeout(() => heart.remove(), duration * 1000);
 }
 
