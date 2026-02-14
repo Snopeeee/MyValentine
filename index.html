@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Valentine Invitation</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="card">
+    <div class="greeting">Hi my love! Inah Cañete</div>
+
+    <h1>💖 Will You Be My Valentine? 💖</h1>
+
+    <p>
+      I know it’s been raining today on Valentine’s Day,
+      but I won’t let this special day pass just because of the weather.
+      I still want to make it meaningful, beautiful, and unforgettable for us.
+    </p>
+
+    <div class="buttons">
+      <button id="acceptBtn">Yes, I Accept 💌</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+
+    <div id="response"></div>
+    <div class="hint">Some love stories don’t allow “no” ✨</div>
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="modal" id="valentineModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-content" role="dialog" aria-modal="true">
+  <h3>It’s a Date 💕</h3>
+  <p>
+    Be prepared, my love… I’ll pick you up at 7:30 PM.
+    Take your time and look as beautiful as you always do. 🌷✨
+  </p>
+  <button class="modal-close" id="closeModalBtn">See you 🥰</button>
+</div>
+
+
+  <!-- Sounds -->
+  <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-cartoon-voice-laugh-343.mp3"></audio>
+  <audio id="yesSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
