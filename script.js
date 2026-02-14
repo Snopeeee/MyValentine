@@ -81,13 +81,19 @@ function sendAcceptanceEmail() {
     return;
   }
 
+function sendAcceptanceEmail() {
   const params = {
-    email: "junry.jumawan4@gmail.com", // ✅ matches {{email}} in template
-    message:
-      "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨",
+    email: "junry.jumawan4@gmail.com",  // MUST be "email"
     time: new Date().toLocaleString(),
-    page_url: window.location.href
+    page_url: window.location.href,
+    message: "Inah Cañete clicked YES 💖 — I’ll pick you up at 7:30 PM."
   };
+
+  emailjs.send("service_zwkrk1s", "template_rc1snto", params)
+    .then(() => console.log("✅ sent"))
+    .catch((err) => console.log("❌", err));
+}
+
 
   response.innerHTML += "<br><small>📩 Sending email...</small>";
 
