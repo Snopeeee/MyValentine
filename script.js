@@ -16,7 +16,9 @@ const modalBackdrop = document.querySelector(".modal-backdrop");
 // ✅ EmailJS init
 (function () {
   if (window.emailjs) {
-    emailjs.init("wYJaqXN05jT1tFfhi");
+    emailjs.init("wYJaqXN05jT1tFfhi"); // Public Key
+  } else {
+    console.warn("EmailJS SDK not loaded.");
   }
 })();
 
@@ -45,7 +47,7 @@ acceptBtn.addEventListener("click", () => {
     confetti({
       particleCount: 220,
       spread: 120,
-      origin: { y: 0.65 }
+      origin: { y: 0.65 },
     });
   }
 
@@ -63,7 +65,7 @@ acceptBtn.addEventListener("click", () => {
   noBtn.style.opacity = "0.75";
   noBtn.style.cursor = "not-allowed";
 
-  // ✅ Send email notification to you
+  // ✅ Send email notification to you (with visible status)
   sendAcceptanceEmail();
 
   // Show popup
@@ -88,21 +90,35 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeModal();
 });
 
-// ✅ Email sending function
+// ✅ Email sending function (with debug + UI status)
 function sendAcceptanceEmail() {
-  if (!window.emailjs) return;
+  if (!window.emailjs) {
+    response.innerHTML += "<br><small style='color:#b00020'>❌ EmailJS not loaded.</small>";
+    return;
+  }
 
+  // Optional: include to_email if your template uses it
   const params = {
+    // to_email: "junry.jumawan4@gmail.com",
     message:
       "Inah Cañete clicked YES 💖 — Be prepared, I’ll pick you up at 7:30 PM. Take your time. 🌷✨",
     time: new Date().toLocaleString(),
-    page_url: window.location.href
+    page_url: window.location.href,
   };
+
+  response.innerHTML += "<br><small>📩 Sending email...</small>";
 
   emailjs
     .send("service_q9ez7ed", "template_rc1snto", params)
-    .then(() => console.log("✅ Email sent via EmailJS"))
-    .catch((err) => console.error("❌ EmailJS failed:", err));
+    .then((res) => {
+      console.log("✅ Email sent via EmailJS:", res);
+      response.innerHTML += "<br><small style='color:green'>✅ Email sent to you!</small>";
+    })
+    .catch((err) => {
+      console.error("❌ EmailJS failed:", err);
+      response.innerHTML +=
+        `<br><small style="color:#b00020">❌ Email failed: ${err?.text || JSON.stringify(err)}</small>`;
+    });
 }
 
 // Hearts (uses your image file)
